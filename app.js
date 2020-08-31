@@ -8,9 +8,14 @@ const port = 3000
 
 app.use(bodyParser.urlencoded({extended: false}))
 
+app.use(express.static("public"))
+
 app.get("/", (req, res) => {
-  res.send("hello world")
+  res.sendFile(__dirname + "/signup.html")
+
 })
+
+
 
 app.listen(port, () => {
   console.log("Server running on localhost:" + port)
