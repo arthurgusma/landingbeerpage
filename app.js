@@ -3,7 +3,6 @@ const bodyParser = require("body-parser")
 const request = require("request")
 const mailChimp = require("@mailchimp/mailchimp_marketing")
 
-
 const app = express()
 const port = 3000
 
@@ -12,15 +11,12 @@ mailChimp.setConfig({
   server: "us17"
 })
 
-
 async function callPing() {
   const response = await mailChimp.ping.get()
   console.log(response)
 }
 
-app.use(bodyParser.urlencoded({
-  extended: true
-}))
+app.use(bodyParser.urlencoded({extended: true}))
 
 callPing()
 
@@ -28,7 +24,6 @@ app.use(express.static("public"))
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/signup.html")
-
 })
 
 app.post("/", (req, res) => {
@@ -53,20 +48,16 @@ app.post("/", (req, res) => {
     })
 
     .then((response) => {
-      console.log(
-        `Successfully added contact as an audience member.
-              The contact's id is ${response.id}.`
-      );
-    }).catch((err) => console.log(err))
+      res.sendFile(__dirname + "/sucess.html")
+    }).catch((err) => { res.sendFile(__dirname + "/failure.html")})
   }
-
   run()
 
 })
 
-
-
-
+app.post("/failure", (req, res) => {
+  res.redirect("/")
+})
 
 app.listen(port, () => {
   console.log("Server running on localhost:" + port)
